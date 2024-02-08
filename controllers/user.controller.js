@@ -17,7 +17,7 @@ const saveUser = async (req, res) => {
 }
 
 const getAllUsers = async (req,res) => {
-    user.User.find()
+    user.User.find().populate('privilege')
     .then(users => {
         //console.log(ingredients);
         res.json(users);
