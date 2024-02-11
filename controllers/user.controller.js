@@ -15,9 +15,16 @@ const saveUser = async (req, res) => {
     
     res.json({message:"post is working"});
 }
+const getUserById = async (req, res) => {
+    user.User.findById(req.userId).populate('privilege')
+    .then(user => {
+        res.json(user);
+    })
+    .catch(err => res.status(400).json('Error; '+err));
+}
 
 const getAllUsers = async (req,res) => {
-    user.User.find()
+    user.User.find().populate('privilege')
     .then(users => {
         //console.log(ingredients);
         res.json(users);
@@ -34,4 +41,4 @@ const getAllPrivileges = async (req,res) => {
     .catch(err => res.status(400).json('Error; '+err));
 }
 
-module.exports = {getAllUsers,saveUser,getAllPrivileges};
+module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges};

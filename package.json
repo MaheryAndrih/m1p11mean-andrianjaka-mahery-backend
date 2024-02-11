@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/MaheryAndrih/mp1p11mean-andrianjaka-mahery-backend#readme",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "nodemon": "^3.0.3"
   }
