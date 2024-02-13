@@ -7,13 +7,14 @@ const saveUser = async (req, res) => {
     const document = new user.User(req.body);
     document.save()
     .then(savedDocument =>{
+        res.json(savedDocument);
         console.log("document saved successfully", savedDocument);
     })
     .catch(error =>{
         console.log("error occured while saving:", error);
+        res.json({error});
     });
     
-    res.json({message:"post is working"});
 }
 const getUserById = async (req, res) => {
     user.User.findById(req.userId).populate('privilege')
