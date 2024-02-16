@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const login = async (req, res) => {
     const {email, password} = req.body;
     try {
-        const logged_user = await user.User.findOne({email});
+        const logged_user = await user.User.findOne({email}).populate('privilege');
         if(!logged_user){
             return res.status(401).json({message: 'Authentication failed'});
         }
