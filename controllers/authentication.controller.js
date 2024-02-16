@@ -12,7 +12,11 @@ const login = async (req, res) => {
             return res.status(401).json({message: 'Authentication failed'});
         }
         const token = jwt.sign({userId: logged_user._id}, 'secret-key', {expiresIn: '1h'});
-        res.status(200).json({token});
+        
+        res.status(200).json({
+            "token": token,
+            "_id": logged_user._id
+        });
     } catch (error) {
         res.status(500).json({error});
     }

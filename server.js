@@ -35,11 +35,10 @@ connection.once('open',() =>{
     console.log("MongDB database connection established successfully");
 })*/
 
-//routes
+app.use('/work_schedule', require('./routes/work_schedule'))
 app.use('/users', require('./routes/users'));
 app.use('/services', serviceRoute);
 app.use('/appointments', appointmentRoute);
-
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

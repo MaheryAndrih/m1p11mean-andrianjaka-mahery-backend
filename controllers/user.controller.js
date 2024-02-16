@@ -17,7 +17,8 @@ const saveUser = async (req, res) => {
     
 }
 const getUserById = async (req, res) => {
-    user.User.findById(req.userId).populate('privilege')
+    userId = req.params.id;
+    user.User.findById(userId).populate('privilege')
     .then(user => {
         res.json(user);
     })
