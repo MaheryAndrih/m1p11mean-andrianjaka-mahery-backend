@@ -1,20 +1,31 @@
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
+const serviceRoute = require('./routes/service.routes');
+const appointmentRoute = require('./routes/appointment.routes');
 const cors = require('cors');
-const corsOptions = require('./config/corsOption');
-const mongoose = require('mongoose');
+/*const corsOptions = require('./config/corsOption');
+const mongoose = require('mongoose');*/
 require('dotenv').config();
+require('./config/db');
+const app = express();
+
+//const cors = require('cors');
+
+// cross origin Resource sharing
+app.use(cors());
+
 
 const PORT = process.env.PORT || 3500;
-// cross origin Resource sharing
-app.use(cors(corsOptions));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //built-in middleware to handle urlencoded
 app.use(express.urlencoded({extended: false}));
 //built-in middlewarefor json
 app.use(express.json());
 
-const uri = process.env.ATLAS_URI;
+/*const uri = process.env.ATLAS_URI;
 
 mongoose.connect(uri,{useNewUrlParser: true});
 
@@ -22,9 +33,14 @@ const connection = mongoose.connection;
 
 connection.once('open',() =>{
     console.log("MongDB database connection established successfully");
-})
+})*/
 
-app.use('/users', require('./routes/users'))
+//routes
+app.use('/users', require('./routes/users'));
+app.use('/services', serviceRoute);
+app.use('/appointments', appointmentRoute);
 
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+});
