@@ -12,7 +12,7 @@ const userSchema = new Schema({
     },
     email: { 
         type: String,
-        unique: false //  pour assure que l'email est unique, on met unique: true
+        unique: true //  pour assure que l'email est unique, on met unique: true
     },
     phoneNumber: String,
     password: String, // À remplacer par un champ haché (utilisation de bcrypt recommandée)
