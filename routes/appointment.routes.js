@@ -9,5 +9,6 @@ router.get('/list/:id',appointmentController.getAppointmentList);
 router.delete('/:id',appointmentController.deleteAppointement);
 router.patch('/payed/:id',appointmentController.payedAppointment);
 router.patch('/unpayed/:id',appointmentController.unpayedAppointment);
+router.get('/:id',appointmentController.getAppointmentById);
 
 module.exports = router;

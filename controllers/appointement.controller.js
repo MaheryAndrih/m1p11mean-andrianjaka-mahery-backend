@@ -23,7 +23,7 @@ module.exports.getHistoriqueUser = async (req, res) => {
         return res.status(400).send('ID unknown: '+req.params.id);
 
     try{
-        const appoitments = await AppointementModel.find({customer: req.params.id});
+        const appoitments = await AppointementModel.find({customer: req.params.id}).populate('services');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);
@@ -35,11 +35,24 @@ module.exports.getAppointmentList = async (req, res) => {
         return res.status(400).send('ID unknown: '+req.params.id);
 
     try{
-        const appoitments = await AppointementModel.find({employe: req.params.id});
+        const appoitments = await AppointementModel.find({employe: req.params.id}).populate('services');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);
     }
+}
+
+module.exports.getAppointmentById = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: '+req.params.id);
+
+    try{
+        const appointment = await AppointementModel.findById(req.params.id).populate('services');
+        res.status(200).json(appointment);
+    } catch(err){
+        return res.status(400).send("err: "+err);
+    }
+
 }
 
 module.exports.getAllAppointement = async (req, res) => {
