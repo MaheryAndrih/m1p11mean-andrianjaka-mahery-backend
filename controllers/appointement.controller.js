@@ -44,7 +44,7 @@ module.exports.getAppointmentList = async (req, res) => {
 
 module.exports.getAllAppointement = async (req, res) => {
     try{
-        const appoitments = await AppointementModel.find();
+        const appoitments = await AppointementModel.find().populate('services');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);

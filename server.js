@@ -25,16 +25,6 @@ app.use(express.urlencoded({extended: false}));
 //built-in middlewarefor json
 app.use(express.json());
 
-/*const uri = process.env.ATLAS_URI;
-
-mongoose.connect(uri,{useNewUrlParser: true});
-
-const connection = mongoose.connection;
-
-connection.once('open',() =>{
-    console.log("MongDB database connection established successfully");
-})*/
-
 app.use('/work_schedule', require('./routes/work_schedule'))
 app.use('/users', require('./routes/users'));
 app.use('/services', serviceRoute);
