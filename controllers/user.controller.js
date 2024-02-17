@@ -43,4 +43,16 @@ const getAllPrivileges = async (req,res) => {
     .catch(err => res.status(400).json('Error; '+err));
 }
 
-module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges};
+const getUsersByPrivilege = async (req, res) => {
+    privilege = req.params.privilege;
+    user.User.find().populate({
+        path: 'privilege',
+        match: { code: privilege }, // Filtrez les privilèges ayant le code 'EMPLOYEE'
+        select: '_id code name' // Sélectionnez seulement les champs nécessaires du privilège
+    })
+    .then(users =>{
+        res.json(users.filter(user => user.privilege !== null))
+    })
+    .catch(err => err.status(400).json('Error: '+err))
+}
+module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges, getUsersByPrivilege};
