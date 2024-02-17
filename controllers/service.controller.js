@@ -48,3 +48,15 @@ module.exports.deleteService = async (req, res) => {
         return res.status(400).json({message: ""+err});
     }
 };
+
+module.exports.getServiceById = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: '+req.params.id);
+
+    try{
+        const service = await ServiceModel.findById(req.params.id);
+        res.status(200).json(service);
+    } catch(err){
+        return res.status(400).send("err: "+err);
+    }
+}
