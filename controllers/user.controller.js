@@ -1,6 +1,19 @@
 const user = require('../models/user.model');
 const { Privilege } = require('../models/privilege.model');
 
+const updateUser = async (req, res) => {
+    try{
+        const users = await user.User.findByIdAndUpdate(
+            { _id: req.params.id },
+            { $set: req.body },
+            { new: user }
+        );
+        return res.send(users);
+    } catch (err){
+        return res.status(500).json({message: ""+err});
+    }
+}
+
 const saveUser = async (req, res) => {
 
 
@@ -55,4 +68,4 @@ const getUsersByPrivilege = async (req, res) => {
     })
     .catch(err => err.status(400).json('Error: '+err))
 }
-module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges, getUsersByPrivilege};
+module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges, getUsersByPrivilege, updateUser};
