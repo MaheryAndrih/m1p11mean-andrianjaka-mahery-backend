@@ -23,7 +23,7 @@ module.exports.getHistoriqueUser = async (req, res) => {
         return res.status(400).send('ID unknown: '+req.params.id);
 
     try{
-        const appoitments = await AppointementModel.find({customer: req.params.id}).populate('services');
+        const appoitments = await AppointementModel.find({customer: req.params.id}).populate('services').populate('customer');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);
