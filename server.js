@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const serviceRoute = require('./routes/service.routes');
 const appointmentRoute = require('./routes/appointment.routes');
 const notificationRoute = require('./routes/notification.routes');
+const specialOfferRoute = require('./routes/specialOffer.route');
 const cors = require('cors');
 const notificationMiddlware = require('./middleware/notificationMiddleware');
 /*const corsOptions = require('./config/corsOption');
@@ -33,7 +34,7 @@ app.use('/users', require('./routes/users'));
 app.use('/services', serviceRoute);
 app.use('/appointments', appointmentRoute);
 app.use('/notification', notificationRoute);
-
+app.use('/special-offers', specialOfferRoute);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 });
