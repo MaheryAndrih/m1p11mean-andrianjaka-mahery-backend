@@ -7,7 +7,8 @@ router.route('/')
     .post(userController.saveUser);
 
 router.route('/:id')
-    .get(userController.getUserById);
+    .get(userController.getUserById)
+    .put(userController.updateUser);
         
 router.route('/privileges').get(userController.getAllPrivileges);
 router.route('/users-privilege/:privilege').get(userController.getUsersByPrivilege);
