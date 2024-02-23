@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const userController = require('../controllers/user.controller');
 const authController = require('../controllers/authentication.controller');
-const verifyToken = require('../middleware/authMiddleware');
+//const verifyToken = require('../middleware/authMiddleware');
 router.route('/')
-    .get(verifyToken,userController.getAllUsers)
+    .get(userController.getAllUsers)
     .post(userController.saveUser);
 
 router.route('/:id')

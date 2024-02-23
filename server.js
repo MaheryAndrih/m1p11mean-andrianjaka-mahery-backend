@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const serviceRoute = require('./routes/service.routes');
 const appointmentRoute = require('./routes/appointment.routes');
+const preferenceRoute = require('./routes/preference.routes');
 const cors = require('cors');
 /*const corsOptions = require('./config/corsOption');
 const mongoose = require('mongoose');*/
@@ -29,6 +30,7 @@ app.use('/work_schedule', require('./routes/work_schedule'))
 app.use('/users', require('./routes/users'));
 app.use('/services', serviceRoute);
 app.use('/appointments', appointmentRoute);
+app.use('/preferences', preferenceRoute);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

@@ -1,4 +1,4 @@
-const AppointementModel = require('../models/appointment');
+const AppointementModel = require('../models/appointment.model');
 const ObjectID = require('mongoose').Types.ObjectId;
 
 module.exports.createAppointement = async (req, res) => {
@@ -35,7 +35,7 @@ module.exports.getAppointmentList = async (req, res) => {
         return res.status(400).send('ID unknown: '+req.params.id);
 
     try{
-        const appoitments = await AppointementModel.find({employe: req.params.id}).populate('services');
+        const appoitments = await AppointementModel.find({employe: req.params.id}).populate('services').populate('customer');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);
@@ -57,7 +57,7 @@ module.exports.getAppointmentById = async (req, res) => {
 
 module.exports.getAllAppointement = async (req, res) => {
     try{
-        const appoitments = await AppointementModel.find().populate('services');
+        const appoitments = await AppointementModel.find().populate('services').populate('employe');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);
@@ -105,5 +105,17 @@ module.exports.unpayedAppointment = async (req, res) => {
         return res.send(appointment);
     } catch (err){
         return res.status(500).json({message: ""+err});
+    }
+}
+
+module.exports.getTaskCommission = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: '+req.params.id);
+
+    try{
+        const appoitments = await AppointementModel.find({employe: req.params.id}).populate('services').populate('customer');
+        res.status(200).json(appoitments);
+    } catch(err){
+        return res.status(400).send("err: "+err);
     }
 }

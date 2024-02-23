@@ -20,11 +20,11 @@ const appointmentSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
-        services: [{
-            type: mongoose.Schema.Types.ObjectId,
+        services: {
+            type: [mongoose.Schema.Types.ObjectId],
             ref: 'service',
             required: true,
-        }],
+        },
         rappel: {
             type: Number,
             required: true,
