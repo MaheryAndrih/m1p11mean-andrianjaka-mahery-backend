@@ -11,5 +11,7 @@ router.get('/list/:id',appointmentController.getAppointmentList);
 router.patch('/payed/:id',appointmentController.payedAppointment);
 router.patch('/unpayed/:id',appointmentController.unpayedAppointment);
 router.get('/task/:id',appointmentController.getTaskCommission);
+router.get('/stat/reservation',appointmentController.getAppointmentsCountByMonth);
+router.get('/stat/reservation/jour',appointmentController.getAppointmentsCountByWeek);
 
 module.exports = router;
