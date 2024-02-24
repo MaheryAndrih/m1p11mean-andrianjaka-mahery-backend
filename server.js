@@ -5,6 +5,7 @@ const appointmentRoute = require('./routes/appointment.routes');
 const preferenceRoute = require('./routes/preference.routes');
 const notificationRoute = require('./routes/notification.routes');
 const specialOfferRoute = require('./routes/specialOffer.route');
+const statsRoute = require('./routes/stats.routes');
 const cors = require('cors');
 const notificationMiddlware = require('./middleware/notificationMiddleware');
 /*const corsOptions = require('./config/corsOption');
@@ -38,6 +39,7 @@ app.use('/preferences', preferenceRoute);
 
 app.use('/notification', notificationRoute);
 app.use('/special-offers', specialOfferRoute);
+app.use('/stats', statsRoute);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 });
