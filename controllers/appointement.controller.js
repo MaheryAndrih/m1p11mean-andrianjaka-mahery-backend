@@ -1,5 +1,6 @@
 const AppointementModel = require('../models/appointment.model');
 const ObjectID = require('mongoose').Types.ObjectId;
+const nodemailer = require('nodemailer');
 
 module.exports.createAppointement = async (req, res) => {
     const newAppointment = new AppointementModel({
@@ -249,3 +250,26 @@ module.exports.getEmployeScheduleByWeek = async (req, res) => {
         res.status(500).json({ message: "" + err });
     }
 };
+
+module.exports.sendEmail = async (req, res) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'maheryandrih1@gmail.com',
+            pass: 'd'
+        }
+    });
+    let mailOptions = {
+        from: 'maheryandrih1@gmail.com',
+        to: 'andria.mahery.nandrianina@gmail.com',
+        subject: req.body.subject,
+        text: req.body.text
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            res.status(500).json({ message: "" + error });
+        } else {
+            res.status(200).json("Email envoye avec succès");
+        }
+    });
+}
