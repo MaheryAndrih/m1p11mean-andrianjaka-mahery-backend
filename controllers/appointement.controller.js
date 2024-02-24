@@ -143,9 +143,10 @@ module.exports.getAppointmentsCountByMonth = async (req, res) => {
 
 module.exports.getAppointmentsCountByWeek = async (req, res) => {
     const currentDate = new Date();
+    const currentDay = currentDate.getDay() === 0 ? 6 : currentDate.getDay() - 1; // Adjust to make Monday the first day of the week
     const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Set to start of current week
-    startOfWeek.setHours(0, 0, 0, 0); // Set to beginning of the day
+    startOfWeek.setDate(currentDate.getDate() - currentDay); // Set to start of current week
+    startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to end of the week
@@ -176,3 +177,75 @@ module.exports.getAppointmentsCountByWeek = async (req, res) => {
         res.status(500).json({ message: "" + err });
     }
 }
+
+module.exports.getEmployeScheduleByMonth = async (req, res) => {
+    const year = new Date().getFullYear();
+    const totalDurationsByMonth = Array(12).fill(0);
+    try {
+        const appointments = await AppointementModel.aggregate([
+            {
+                $match: {
+                    date: {
+                        $gte: new Date(year, 0, 1), // Start of the year
+                        $lte: new Date(year, 11, 31, 23, 59, 59) // End of the year
+                    }
+                }
+            },
+            {
+                $unwind: "$services"
+            },
+            {
+                $lookup: {
+                    from: "services",
+                    localField: "services",
+                    foreignField: "_id",
+                    as: "service_details"
+                }
+            },
+            {
+                $unwind: "$service_details"
+            }
+        ]);
+        appointments.forEach(appointment => {
+            const month = new Date(appointment.date).getMonth();
+            totalDurationsByMonth[month] += appointment.service_details.duration;
+        });
+        res.status(200).json(totalDurationsByMonth);
+    } catch (err) {
+        res.status(500).json({ message: "" + err });
+    }
+};
+
+module.exports.getEmployeScheduleByWeek = async (req, res) => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay() === 0 ? 6 : currentDate.getDay() - 1; // Adjust to make Monday the first day of the week
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(currentDate.getDate() - currentDay); // Set to start of current week
+    startOfWeek.setHours(0, 0, 0, 0); // Set to beginning of the day
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to end of the week
+    endOfWeek.setHours(23, 59, 59, 999); // Set to end of the day
+
+    const totalDurationsByDay = Array(7).fill(0);
+
+    try {
+        const appointments = await AppointementModel.find({
+            date: {
+                $gte: startOfWeek,
+                $lte: endOfWeek
+            }
+        }).populate('services');
+
+        appointments.forEach(appointment => {
+            const dayOfWeek = new Date(appointment.date).getDay();
+            appointment.services.forEach(service => {
+                totalDurationsByDay[(dayOfWeek + 6) % 7] += service.duration; // Adjust to make Monday the first day of the week
+            });
+        });
+
+        res.status(200).json(totalDurationsByDay);
+    } catch (err) {
+        res.status(500).json({ message: "" + err });
+    }
+};
