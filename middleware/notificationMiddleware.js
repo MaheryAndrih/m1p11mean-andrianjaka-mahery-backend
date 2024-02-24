@@ -10,38 +10,28 @@ function interceptSubscription(req, res, next) {
     webpush.setVapidDetails('mailto:bob.ituniversity@gmail.com', publicKey, privateKey);
     console.log('subscription is set');
 }
-function sendPush(){
-    const payload = {
-        "notification": {
-            "data": {
-                "onActionClick": {
-                  "default": {"operation": "focusLastFocusedOrOpen", "url": "/#/users/user-list"}
-                }
-              },
-            title: "Fun oh Heuristic",
-            vibrate: [100, 50, 100]
-        }
-    };
-  
-    setInterval(() => {
-        if(sub!=null){
-            console.log(sub.endpoint);
-           
-                webpush.sendNotification(sub, JSON.stringify(payload)).catch((error) => {
-                    if (error.statusCode === 410) {
-                        // Gérer l'abonnement expiré, par exemple, supprimer l'abonnement côté client
-                        console.log("Abonnement expiré. Suppression de l'abonnement côté client.");
-                        // Code pour supprimer l'abonnement expiré
-                    } else {
-                        // Gérer d'autres erreurs
-                        console.error("Erreur lors de l'envoi de la notification :", error);
-                    }
-                });
-                console.log("Notification envoyée avec succès.");
-           
-        }
-    }, 10000);
 
+function sendPush(payload, response){
+
+    if(sub!=null){
+        console.log(sub.endpoint);
+        
+            webpush.sendNotification(sub, JSON.stringify(payload)).catch((error) => {
+                if (error.statusCode === 410) {
+                    console.log("Abonnement expiré. Suppression de l'abonnement côté client.");
+                } else {
+                    console.error("Erreur lors de l'envoi de la notification :", error);
+                }
+                response.json(error);
+                return;
+            });
+
+            response.json("notification sent");
+            console.log("Notification envoyée avec succès.");
+        
+    }else{
+        response.json("subscription is not set");
+    }
 }
 
 module.exports ={interceptSubscription, sendPush}

@@ -29,8 +29,6 @@ app.use(express.urlencoded({extended: false}));
 //built-in middlewarefor json
 app.use(express.json());
 
-notificationMiddlware.sendPush();
-
 app.use('/work_schedule', require('./routes/work_schedule'))
 app.use('/users', require('./routes/users'));
 app.use('/services', serviceRoute);
