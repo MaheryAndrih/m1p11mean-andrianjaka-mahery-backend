@@ -254,14 +254,19 @@ module.exports.getEmployeScheduleByWeek = async (req, res) => {
 module.exports.sendEmail = async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
+        debug: true,
         auth: {
-            user: 'maheryandrih1@gmail.com',
-            pass: 'd'
+            type: 'OAuth2',
+            user: process.env.MAIL_USERNAME,
+            pass: process.env.MAIL_PASSWORD,
+            clientId:process.env.OAUTH_CLIENTID,
+            clientSecret: process.env.OAUTH_CLIENT_SECRET,
+            refreshToken: process.env.OAUTH_REFRESH_TOKEN
         }
     });
     let mailOptions = {
-        from: 'maheryandrih1@gmail.com',
-        to: 'andria.mahery.nandrianina@gmail.com',
+        from: process.env.MAIL_USERNAME,
+        to: 'maheryandrih1@gmail.com',
         subject: req.body.subject,
         text: req.body.text
     };
