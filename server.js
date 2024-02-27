@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const serviceRoute = require('./routes/service.routes');
@@ -11,7 +12,6 @@ const cors = require('cors');
 const notificationMiddlware = require('./middleware/notificationMiddleware');
 /*const corsOptions = require('./config/corsOption');
 const mongoose = require('mongoose');*/
-require('dotenv').config();
 require('./config/db');
 const app = express();
 

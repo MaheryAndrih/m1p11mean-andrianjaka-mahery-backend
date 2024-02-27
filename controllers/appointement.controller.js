@@ -257,7 +257,7 @@ module.exports.sendEmail = async (req, res) => {
         debug: true,
         auth: {
             type: 'OAuth2',
-            user: process.env.MAIL_USERNAME,
+            user: "randretsaandrianjaka30@gmail.com",
             pass: process.env.MAIL_PASSWORD,
             clientId:process.env.OAUTH_CLIENTID,
             clientSecret: process.env.OAUTH_CLIENT_SECRET,
@@ -266,13 +266,13 @@ module.exports.sendEmail = async (req, res) => {
     });
     let mailOptions = {
         from: process.env.MAIL_USERNAME,
-        to: 'maheryandrih1@gmail.com',
+        to: req.body.to,
         subject: req.body.subject,
         text: req.body.text
     };
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-            res.status(500).json({ message: "" + error });
+            res.status(500).json({ error });
         } else {
             res.status(200).json("Email envoye avec succès");
         }
