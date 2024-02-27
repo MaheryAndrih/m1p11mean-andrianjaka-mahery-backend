@@ -16,5 +16,6 @@ router.get('/stat/reservation/jour',appointmentController.getAppointmentsCountBy
 router.get('/stat/schedule',appointmentController.getEmployeScheduleByMonth);
 router.get('/stat/schedule/jour',appointmentController.getEmployeScheduleByWeek);
 router.post('/sendEmail',appointmentController.sendEmail);
+router.post('/search',appointmentController.searchService);
 
 module.exports = router;

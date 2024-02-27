@@ -12,6 +12,7 @@ router.route('/:id')
         
 router.route('/privileges').get(userController.getAllPrivileges);
 router.route('/users-privilege/:privilege').get(userController.getUsersByPrivilege);
+router.route('/search').post(userController.searchEmploye);
 router.route('/login')
-    .post(authController.login)
+    .post(authController.login);
 module.exports = router;

@@ -24,7 +24,7 @@ module.exports.getHistoriqueUser = async (req, res) => {
         return res.status(400).send('ID unknown: '+req.params.id);
 
     try{
-        const appoitments = await AppointementModel.find({customer: req.params.id}).populate('services').populate('customer');
+        const appoitments = await AppointementModel.find({customer: req.params.id}).populate('services').populate('employe');
         res.status(200).json(appoitments);
     } catch(err){
         return res.status(400).send("err: "+err);
@@ -272,4 +272,39 @@ module.exports.sendEmail = async (req, res) => {
             res.status(200).json("Email envoye avec succès");
         }
     });
+}
+
+module.exports.searchService = async (req, res) => {
+    appointment = {}
+    
+    if(req.body.date!=null){
+        appointment.date = req.body.date
+    }
+    if(req.body.customer!=null){
+        appointment.customer = req.body.customer
+    }
+    if(req.body.heure!=null){
+        appointment.heure = req.body.heure
+    }
+    if(req.body.employe!=null){
+        appointment.employe = req.body.employe
+    }
+    if(req.body.ispayed!=null){
+        if(req.body.ispayed=='0'){
+            appointment.ispayed = false
+        } else {
+            appointment.ispayed = true
+        }
+    }
+    try{
+        if(req.body.date==null && req.body.heure==null && req.body.employe==null && req.body.ispayed==null){
+            const appointments = await AppointementModel.find({customer: req.body.customer}).populate('services').populate('employe');
+            res.status(200).json(appointments);
+        }else{
+            const appointments = await AppointementModel.find(appointment).populate('services').populate('employe');
+            res.status(200).json(appointments);
+        }
+    } catch(err){
+        return res.status(400).send("err: "+err);
+    }
 }

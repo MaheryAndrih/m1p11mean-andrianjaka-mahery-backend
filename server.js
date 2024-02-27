@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const serviceRoute = require('./routes/service.routes');
 const appointmentRoute = require('./routes/appointment.routes');
 const preferenceRoute = require('./routes/preference.routes');
+const depenseRoute = require('./routes/depense.routes');
 const notificationRoute = require('./routes/notification.routes');
 const specialOfferRoute = require('./routes/specialOffer.route');
 const statsRoute = require('./routes/stats.routes');
@@ -34,7 +35,7 @@ app.use('/users', require('./routes/users'));
 app.use('/services', serviceRoute);
 app.use('/appointments', appointmentRoute);
 app.use('/preferences', preferenceRoute);
-
+app.use('/depenses', depenseRoute);
 app.use('/notification', notificationRoute);
 app.use('/special-offers', specialOfferRoute);
 app.use('/stats', statsRoute);

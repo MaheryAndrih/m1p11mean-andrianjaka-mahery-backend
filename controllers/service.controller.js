@@ -60,3 +60,30 @@ module.exports.getServiceById = async (req, res) => {
         return res.status(400).send("err: "+err);
     }
 }
+
+module.exports.searchService = async (req, res) => {
+    service = {}
+    if(req.body.name!=null){
+        service.name = req.body.name
+    }
+    if(req.body.price!=null){
+        service.price = req.body.price
+    }
+    if(req.body.duration!=null){
+        service.duration = req.body.duration
+    }
+    if(req.body.commission!=null){
+        service.commission = req.body.commission
+    }
+    try{
+        if(req.body.name==null && req.body.price==null && req.body.duration==null && req.body.commission==null){
+            const services = await ServiceModel.find();
+            res.status(200).json(services);
+        }else{
+            const services = await ServiceModel.find(service);
+            res.status(200).json(services);
+        }
+    } catch(err){
+        return res.status(400).send("err: "+err);
+    }
+}

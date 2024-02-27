@@ -68,4 +68,38 @@ const getUsersByPrivilege = async (req, res) => {
     })
     .catch(err => err.status(400).json('Error: '+err))
 }
-module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges, getUsersByPrivilege, updateUser};
+
+const searchEmploye = async (req, res) => {
+    employe = {}
+    if(req.body.lastName!=null){
+        employe.lastName = req.body.lastName
+    }
+    if(req.body.firstName!=null){
+        employe.firstName = req.body.firstName
+    }
+    try{
+        if(req.body.lastName==null && req.body.firstName==null){
+            const users = await user.User.find().populate({
+                path: 'privilege',
+                match: { code: "EMPLOYEE" },
+                select: '_id code name'
+            }).then(users =>{
+                res.json(users.filter(user => user.privilege !== null))
+            });
+            res.status(200).json(users);
+        }else{
+            const services = await user.User.find(employe).populate({
+                path: 'privilege',
+                match: { code: "EMPLOYEE" },
+                select: '_id code name'
+            }).then(users =>{
+                res.json(users.filter(user => user.privilege !== null))
+            });
+            res.status(200).json(services);
+        }
+    } catch(err){
+        return res.status(400).send("err: "+err);
+    }
+}
+
+module.exports = {getAllUsers,getUserById,saveUser,getAllPrivileges, getUsersByPrivilege, updateUser, searchEmploye};
