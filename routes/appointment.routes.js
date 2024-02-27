@@ -17,5 +17,7 @@ router.get('/stat/schedule',appointmentController.getEmployeScheduleByMonth);
 router.get('/stat/schedule/jour',appointmentController.getEmployeScheduleByWeek);
 router.post('/sendEmail',appointmentController.sendEmail);
 router.post('/search',appointmentController.searchService);
+router.post('/achivement/:id',appointmentController.getAppointmentEtat);
+router.put('/achivement/:id',appointmentController.updateAppointmentEtat);
 
 module.exports = router;

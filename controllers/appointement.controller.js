@@ -313,3 +313,36 @@ module.exports.searchService = async (req, res) => {
         return res.status(400).send("err: "+err);
     }
 }
+
+module.exports.getAppointmentEtat = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: '+req.params.id);
+
+    appointment = {
+        employe: req.params.id,
+        isdone: req.body.isdone
+    }
+
+    try{
+        const appoitments = await AppointementModel.find(appointment).populate('services').populate('customer');
+        res.status(200).json(appoitments);
+    } catch(err){
+        return res.status(400).send("err: "+err);
+    }
+}
+
+module.exports.updateAppointmentEtat = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: '+req.params.id);
+
+    try{
+        const appointment = await AppointementModel.findByIdAndUpdate(
+            { _id: req.params.id },
+            { isdone: req.body.isdone },
+            { new: true }
+        );
+        return res.send(appointment);
+    } catch (err){
+        return res.status(500).json({message: ""+err});
+    }
+}
